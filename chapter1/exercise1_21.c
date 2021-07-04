@@ -3,6 +3,7 @@
 #define MAX_BUFFER 1000
 #define TAB_WIDTH 7
 
+void printstrSpecial(char line[]);
 int mygetline(char line[], int limit);
 void entab(char to[], char from[]);
 
@@ -11,9 +12,28 @@ main() {
     char entabbed[MAX_BUFFER];
     while (mygetline(line, MAX_BUFFER) > 0) {
         entab(entabbed, line);
-        printf("%s", line);
-        printf("%s", entabbed);
+        printf("%s\n", line);
+        printstrSpecial(entabbed);
+        printf("%s\n", entabbed);
     }
+}
+
+void printstrSpecial(char line[]) {
+    int i, c;
+    i=0;
+    while ((c = line[i]) != '\0') {
+        if (c == '\t') {
+            putchar('t');
+        }
+        else if (c == ' ') {
+            putchar('s');
+        }
+        else {
+            putchar(c);
+        }
+        ++i;
+    }
+    putchar('\n');
 }
 
 int mygetline(char line[], int limit) {
