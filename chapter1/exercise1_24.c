@@ -3,14 +3,35 @@
 #define MAX_BUFFER 1000
 
 int mygetline(char line[], int limit);
-int checkSyntax(char line[]);
+int checkSyntax(char line[], int lineNumber);
+
+int leadingParentheses = 0;
+int leadingCurlyBrackets = 0;
+int leadingSquareBrackets = 0;
+int openSingleQuote = 0;
+int openDoubleQuote = 0;
 
 main() {
     int lineNumber = 1;
     char line[MAX_BUFFER];
     while (mygetline(line, MAX_BUFFER) > 0) {
-        checkSyntax(line);
+        checkSyntax(line, lineNumber);
         ++lineNumber;
+    }
+    if (leadingParentheses > 0) {
+        printf("Expected )\n");
+    }
+    if (leadingCurlyBrackets > 0) {
+        printf("Expected }\n");
+    }
+    if (leadingSquareBrackets > 0) {
+        printf("Expected ]\n");
+    }
+    if (openSingleQuote > 0) {
+        printf("Expected \'\n");
+    }
+    if (openDoubleQuote > 0) {
+        printf("Expected \"\n");
     }
 }
 
@@ -27,16 +48,19 @@ int mygetline(char line[], int limit) {
 
 int checkSyntax(char line[], int lineNumber) {
     int i,c;
-    int leadingParentheses = 0;
-    int leadingCurlyBrackets = 0;
-    int leadingSquareBrackets = 0;
     for (i = 0; (c = line[i]) != '\0'; ++i) {
+        if (c == '\'') {
+            openSingleQuote = !openSingleQuote;
+        }
+        if (c == '\"') {
+            openDoubleQuote = !openDoubleQuote;
+        }
         if (c == '(') {
             ++leadingParentheses;
         }
         if (c == ')') {
             if (leadingParentheses == 0) {
-                printf("Error on line %d, unexpected )", lineNumber);
+                printf("Error on line %d, unexpected )\n", lineNumber);
                 return 0;
             }
             --leadingParentheses;
@@ -46,7 +70,7 @@ int checkSyntax(char line[], int lineNumber) {
         }
         if (c == '}') {
             if (leadingCurlyBrackets == 0) {
-                printf("Error on line %d, unexpected }", lineNumber);
+                printf("Error on line %d, unexpected }\n", lineNumber);
                 return 0;
             }
             --leadingCurlyBrackets;
@@ -56,7 +80,7 @@ int checkSyntax(char line[], int lineNumber) {
         }
         if (c == ']') {
             if (leadingSquareBrackets == 0) {
-                printf("Error on line %d, unexpected ]", lineNumber);
+                printf("Error on line %d, unexpected ]\n", lineNumber);
                 return 0;
             }
         }
