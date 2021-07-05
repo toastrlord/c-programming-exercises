@@ -11,18 +11,15 @@ main() {
     char line[MAX_BUFFER];
     char uncommented[MAX_BUFFER];
     while (mygetline(line, MAX_BUFFER) > 0) {
-        printf("uncomment\n");
         uncomment(uncommented, line);
-        printf("%s\n", uncommented);
+        printf("%s", uncommented);
     }
 }
 
 int mygetline(char line[], int limit) {
-    printf("getting line\n");
     int i, c;
-    for (i = 0; (c = getchar()) != EOF && c != '\n'; ++i) {
+    for (i = 0; i < limit - 1 && (c = getchar()) != EOF && c != '\n'; ++i) {
         line[i] = c;
-        printf("%c", c);
     }
     if (i == 0) {
         return 0;
@@ -74,6 +71,10 @@ void uncomment(char to[], char from[]) {
                 ++j;
             }
         }
+    }
+    if (to[j] != '\n') {
+        to[j] = '\n';
+        ++j;
     }
     to[j] = '\0';
 }
