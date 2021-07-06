@@ -2,6 +2,7 @@
 
 #define MAX_BUFFER 1000
 
+void printError(char line[], int index, int lineNumber, char msg[]);
 int mygetline(char line[], int limit);
 int checkSyntax(char line[], int lineNumber);
 
@@ -10,6 +11,7 @@ int leadingCurlyBrackets = 0;
 int leadingSquareBrackets = 0;
 int openSingleQuote = 0;
 int openDoubleQuote = 0;
+int commenting = 0;
 
 main() {
     int lineNumber = 1;
@@ -35,10 +37,22 @@ main() {
     }
 }
 
+void printError(char line[], int index, int lineNumber, char msg[]) {
+    printf("%s", line);
+    for (int i = 0; i < index; ++i) {
+        printf(" ");
+    }
+    printf("^\n");
+    printf("Error on line %d, %s\n", lineNumber, msg);
+}
+
 int mygetline(char line[], int limit) {
     int i,c;
     for (i = 0; i < limit - 1 && (c = getchar()) != EOF && c != '\n'; ++i) {
         line[i] = c;
+    }
+    if (i == 0) {
+        return i;
     }
     line[i] = '\n';
     ++i;
@@ -49,40 +63,61 @@ int mygetline(char line[], int limit) {
 int checkSyntax(char line[], int lineNumber) {
     int i,c;
     for (i = 0; (c = line[i]) != '\0'; ++i) {
-        if (c == '\'') {
-            openSingleQuote = !openSingleQuote;
+        if (c == '/' && line[i + 1] == '*') {
+            commenting = 1;
+            ++i;
         }
-        if (c == '\"') {
-            openDoubleQuote = !openDoubleQuote;
+        if (c == '*' && line[i + 1] == '/') {
+            commenting = 0;
+            ++i;
         }
-        if (c == '(') {
-            ++leadingParentheses;
-        }
-        if (c == ')') {
-            if (leadingParentheses == 0) {
-                printf("Error on line %d, unexpected )\n", lineNumber);
-                return 0;
+        if (!commenting) {
+            if (c == '/' && line[i + 1] == '/') {
+                // comment, so ignore rest of line
+                return 1;
             }
-            --leadingParentheses;
-        }
-        if (c == '{') {
-            ++leadingCurlyBrackets;
-        }
-        if (c == '}') {
-            if (leadingCurlyBrackets == 0) {
-                printf("Error on line %d, unexpected }\n", lineNumber);
-                return 0;
+            if (c == '\\') {
+                // escape character, so ignore what comes after
+                ++i;
             }
-            --leadingCurlyBrackets;
-        }
-        if (c == '[') {
-            ++leadingSquareBrackets;
-        }
-        if (c == ']') {
-            if (leadingSquareBrackets == 0) {
-                printf("Error on line %d, unexpected ]\n", lineNumber);
-                return 0;
+            if (c == '\'') {
+                openSingleQuote = !openSingleQuote;
+            }
+            if (c == '\"') {
+                openDoubleQuote = !openDoubleQuote;
+            }
+            if (c == '(') {
+                ++leadingParentheses;
+            }
+            if (c == ')') {
+                if (leadingParentheses == 0) {
+                    printError(line, i, lineNumber, "unexpected )");
+                    return 0;
+                }
+                --leadingParentheses;
+            }
+            if (c == '{') {
+                ++leadingCurlyBrackets;
+            }
+            if (c == '}') {
+                if (leadingCurlyBrackets == 0) {
+                    printError(line, i, lineNumber, "unexpected }");
+                    return 0;
+                }
+                --leadingCurlyBrackets;
+            }
+            if (c == '[') {
+                ++leadingSquareBrackets;
+            }
+            if (c == ']') {
+                if (leadingSquareBrackets == 0) {
+                    printError(line, i, lineNumber, "unexpected ]");
+                    return 0;
+                }
+                --leadingSquareBrackets;
             }
         }
     }
+
+    return 1;
 }
