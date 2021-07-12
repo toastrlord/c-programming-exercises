@@ -1,7 +1,11 @@
+
+
 /*
     start exercise 4-6 functions
     4-6 4-6 4-6 4-6 4-6 4-6 4-6 4-6 4-6 4-6 4-6 4-6 4-6 4-6 4-6 4-6 4-6 4-6 4-6 4-6 4-6 4-6 4-6 4-6 4-6 4-6 4-6 4-6 
 */
+double variables[26 * 2]; // array for storing variable values
+
 double fetchVar(char c) {
     if (c >= 'a' && c <= 'z') {
         return variables[c - 'a'];

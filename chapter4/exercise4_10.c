@@ -1,40 +1,22 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <math.h>
 
 #define MAXOP 100 // maximum size of operand/operator
 #define MAXVAL 100 // maximum depth of val stack
 #define NUMBER '0' // signal that a number was found
-#define STR_OP '1' // signal that a library function was found (exercise 4-5)
-
-int sp = 0; // next free stack position
-double val[MAXVAL]; // value stack
-
-int getop(char []);
-void push(double);
-double pop(void);
-void peek(void);
-void duplicate(void);
-void swap(void);
-void clear(void);
-void printStack(void);
-int getch(void);
-void ungetch(char);
-int mystrequal(char [], char []);
-double fetchVar(char);
-void storeVar(char, double);
-void ungets(char []);
-
-/*  reverse Polish notation calculator
-    ex: 2 3 + = 5
-        (1 2 +) (2 3 +) - = -2
-*/
+#define MAX_LINE 1000
+char line[MAX_LINE];
+int lineIndex = 0;
 
 main() {
     int type;
     double op2;
+    char line[MAX_LINE];
+    getline(line, MAX_LINE, stdin);
+    // get the line
+    // split by whitespace
+    // feed one 'word' to getop at a time for processing
     char s[MAXOP];
+    readNext(line, s);
     
     while ((type = getop(s)) != EOF) {
         switch(type) {
@@ -74,35 +56,33 @@ main() {
                 printf("error: unknown command %s\n", s);
                 break;
         }
+        readNext(line, s);
     }
     return 0;
 }
 
+void readNext(char line[], char op[]) {
+    int j = 0;
+    int c;
+    while ((c = line[lineIndex]) == ' ' || c == '\t') {
+        lineIndex++;
+    }
+    for (lineIndex; (c = line[lineIndex]) != EOF && c != ' ' && c != '\0'; lineIndex++) {
+        op[j] = c;
+        j++;
+    }
+    op[j] = '\0';
+}
+
 // getop: get next operator or numeric operand
 int getop(char s[]) {
-    int i, c, sign;
-    i = 0;
+    int i, c;
     while ((s[0] = c = getch()) == ' ' || c == '\t');
     s[1] = '\0';
-    if (!isdigit(c) && c != '.' && c != '-') {
-        while(c != ' ' && c != '\n' && c != EOF) {
-            s[i++] = c;
-            c = getch();
-        }
-        s[i] = '\0';
-        if (i > 1) {
-            ungetch(c);
-            return STR_OP;
-        }
+    if (!isdigit(c) && c != '.') {
         return c;
     }
-    if (c == '-') { // exercise 4-3: handle negative numbers
-        if (!isdigit(c = getch())) {
-            ungetch(c);
-            return '-';
-        }
-        ungetch(c);
-    }
+    i = 0;
     if (isdigit(c)) { // collect integer portion
         while (isdigit(s[++i] = c = getch()));
     }
@@ -114,42 +94,4 @@ int getop(char s[]) {
         ungetch(c);
     }
     return NUMBER;
-}
-
-// push: push f onto the value stack
-void push(double f) {
-    if (sp < MAXVAL) {
-        val[sp++] = f;
-    }
-    else {
-        printf("error: stack full, can't push %g\n", f);
-    }
-}
-
-// pop: return the value on top of the stack
-double pop(void) {
-    if (sp > 0) {
-        return val[--sp];
-    }
-    else {
-        printf("error: stack empty\n");
-        return 0.0;
-    }
-}
-
-#define BUFSIZE 100
-char buf[BUFSIZE];
-int bufp = 0;
-
-int getch(void) {
-    return (bufp > 0) ? buf[--bufp] : getchar();
-}
-
-void ungetch(char c) {
-    if (bufp < BUFSIZE) {
-        buf[bufp++] = c;
-    }
-    else {
-        printf("error: character buffer full\n");
-    }
 }
