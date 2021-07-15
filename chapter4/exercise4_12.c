@@ -5,7 +5,7 @@ int inner(int, char[], int);
 
 main() {
     char s[1000];
-    itoa(5237, s);
+    itoa(-5237, s);
     printf("%s\n", s);
 }
 
@@ -19,6 +19,7 @@ int inner(int num, char s[], int i) {
     if (num < 0) {
         num = -num;
         s[i++] = '-';
+        return inner(num, s, i);
     }
     if (num / 10) {
         //  more than one digit to go!
