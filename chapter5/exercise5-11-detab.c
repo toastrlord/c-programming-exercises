@@ -11,6 +11,10 @@ void detab(char *, char *, int);
 
 main(int argc, char *arv[]) {
     int i = 1;
+    if (argc != 3) {
+        printf("Usage: detab inputFile outputFile\n");
+        return;
+    }
     while (input = getline()) {
         if (i == argc) {
             entab(input, output, atoi(argv[i]));

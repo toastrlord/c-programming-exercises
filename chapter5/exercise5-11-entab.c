@@ -11,7 +11,7 @@ void entab(char *, char *, int);
 
 main(int argc, char *argv[]) {
     int i = 1;
-    while (input = getline()) {
+    while (getline(input)) {
         if (i == argc) {
             entab(input, output, atoi(argv[i]));
         }  
