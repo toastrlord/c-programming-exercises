@@ -24,7 +24,26 @@ main() {
 }
 
 int getline(char *, int);
-char *alloc(int); 
+
+#define ALLOCSIZE 10000
+static char allocbuf[ALLOCSIZE]; /* storage for alloc */
+static char *allocp = allocbuf; /* next free position */
+/* return pointer to n characters */
+char *alloc(int n) {
+    if (allocbuf + ALLOCSIZE - allocp >= n) {
+        allocp += n;
+        return allocp - n;
+    }
+    else {
+        return 0;
+    }
+}
+
+void afree(char *p) {
+    if (p >= allocbuf && p < allocbuf + ALLOCSIZE) {
+        allocp = p;
+    }
+}
 
 int readlines(char *lineptr[], int maxlines) {
     int len, nlines;
@@ -32,7 +51,7 @@ int readlines(char *lineptr[], int maxlines) {
 
     nlines = 0;
     while((len = getline(line, MAXLEN)) > 0) {
-        if (nlines >= maxlines || (p = alloc(len)) == NULL) {
+        if (nlines >= maxlines || (p = malloc(len)) == NULL) {
             return -1;
         }
         else {
