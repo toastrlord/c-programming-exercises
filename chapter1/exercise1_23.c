@@ -1,3 +1,4 @@
+// exercise 1-23: Write a program to remove all comments from a C program. Dont forget to handle quoted strings and character constants properly. C comments do not nest.
 #include <stdio.h>
 
 #define MAX_BUFFER 1000

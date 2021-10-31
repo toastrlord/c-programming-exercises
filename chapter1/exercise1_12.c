@@ -1,3 +1,4 @@
+// exercise 1-12: write a program that prints its input one word per line
 #include <stdio.h>
 
 // Print input one word per line

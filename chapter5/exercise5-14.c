@@ -70,6 +70,26 @@ void writelines(char *lineptr[], int nlines) {
   }
 }
 
+void myqsort(void *lineptr[], int left, int right, int (*comp)(void *, void*)) {
+  while (left < right && left >= 0) {
+    int pivotIndex = (left + right) / 2;
+    void *pivotElement = lineptr[pivotIndex];
+    int nextIndex = left + 1;
+    swap(lineptr, pivotIndex, left);
+    for (int i = left + 1; i <= right; i++) {
+      void *currentElement = lineptr[i];
+      int comparison = comp(currentElement, pivotElement);
+      if (comparison < 0) {
+        swap(lineptr, i, nextIndex);
+        nextIndex++;
+      }
+    }
+    swap(lineptr, left, nextIndex);
+    myqsort(lineptr, left, nextIndex - 1, comp);
+    myqsort(lineptr, nextIndex + 1, right, comp);
+  }
+}
+
 #define ALLOCSIZE 10000
 static char allocbuf[ALLOCSIZE]; /* storage for alloc */
 static char *allocp = allocbuf; /* next free position */

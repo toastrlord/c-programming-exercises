@@ -1,3 +1,4 @@
+// exercise 1-13: write a program to print a histogram of the lengths of words in its input. A horizontal histogram is easier- vertical is more challenging
 #include <stdio.h>
 
 // print a histogram of the lengths of words in the input

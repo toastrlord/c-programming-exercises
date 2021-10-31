@@ -1,3 +1,4 @@
+// exercise 1-24: write a program to check a C-program for rudimentary syntax errors like unbalanced parantheses, brackets and braces. Don't forget about single/dobule quotes, escape sequences and comments.
 #include <stdio.h>
 
 #define MAX_BUFFER 1000

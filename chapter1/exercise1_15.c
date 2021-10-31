@@ -1,3 +1,4 @@
+// exercise 1-15: rewrite the temperature conversion program of sectio 1.2 to use a function for conversion
 #include <stdio.h>
 
 // rewrite temp conversion program to use functions

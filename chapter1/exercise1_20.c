@@ -1,3 +1,4 @@
+// exercise 1-20: write a program detab that replaces tabs in the input with the proper number of blanks to space to the next tabstop. Assume a fixed set of tab stops.
 #include <stdio.h>
 
 #define TAB_WIDTH 8

@@ -1,3 +1,4 @@
+// Exercise 1-3: modify the temperature conversion program to print a heading above the table
 #include <stdio.h>
 
 main() {

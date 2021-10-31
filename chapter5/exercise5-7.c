@@ -51,7 +51,7 @@ int readlines(char *lineptr[], int maxlines) {
 
     nlines = 0;
     while((len = getline(line, MAXLEN)) > 0) {
-        if (nlines >= maxlines || (p = malloc(len)) == NULL) {
+        if (nlines >= maxlines || (p = alloc(len)) == NULL) {
             return -1;
         }
         else {
@@ -67,4 +67,24 @@ void writelines(char *lineptr[], int nlines) {
     for (int i = 0; i < nlines; i++) {
         printf("%s\n", lineptr[i]);
     }
+}
+
+void myqsort(char *lineptr[], int left, int right) {
+  while (left < right && left >= 0) {
+    int pivotIndex = (left + right) / 2;
+    void *pivotElement = lineptr[pivotIndex];
+    int nextIndex = left + 1;
+    swap(lineptr, pivotIndex, left);
+    for (int i = left + 1; i <= right; i++) {
+      void *currentElement = lineptr[i];
+      int comparison = currentElement < pivotElement;
+      if (comparison < 0) {
+        swap(lineptr, i, nextIndex);
+        nextIndex++;
+      }
+    }
+    swap(lineptr, left, nextIndex);
+    myqsort(lineptr, left, nextIndex - 1);
+    myqsort(lineptr, nextIndex + 1, right);
+  }
 }

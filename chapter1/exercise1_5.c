@@ -1,3 +1,4 @@
+// exercise 1-5: Modify the temperature conversin program to print the table in reverse order
 #include <stdio.h>
 
 #define UPPER 300

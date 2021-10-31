@@ -1,3 +1,5 @@
+// exercise 1-10: write a program to copy its input to its output, replacing each tab by \t, backspace by \b, and each backslash by \\
+
 #include <stdio.h>
 
 main() {

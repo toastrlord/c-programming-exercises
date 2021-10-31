@@ -1,3 +1,4 @@
+// exercise 1-8: write a program to count blanks, tabs and newlines
 #include <stdio.h>
 
 main() {

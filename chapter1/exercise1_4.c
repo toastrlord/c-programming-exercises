@@ -1,3 +1,4 @@
+// exercise 1-4: Write a proram to print the corresponding celsius and fahrenheit table
 #include <stdio.h>
 
 main() {
