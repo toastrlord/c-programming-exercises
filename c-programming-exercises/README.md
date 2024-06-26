@@ -1,1 +1,0 @@
-This repository contains the results to excercises from "The C Programming Language" by Kernighan & Ritchie

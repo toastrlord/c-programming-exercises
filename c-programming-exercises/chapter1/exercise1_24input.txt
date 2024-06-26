@@ -1,6 +1,0 @@
-main() {
-    /* { ) ]
-    */
-    this should be an error ]
-    printf();
-}

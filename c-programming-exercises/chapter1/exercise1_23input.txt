@@ -1,5 +1,0 @@
-// should not be displayed
-should be displayed
-this should be shown /* but not any of this
-or this
-or this */ but this // not the rest of this
