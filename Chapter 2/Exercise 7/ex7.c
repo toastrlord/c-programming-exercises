@@ -2,7 +2,7 @@
 
 int invert(int x, int p, int n);
 
-main() {
+int main() {
   printf("%d\n", invert(70, 4, 3));
 }
 
